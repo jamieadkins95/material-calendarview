@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -267,7 +269,8 @@ public final class CalendarDay implements Parcelable {
 
     @Override
     public String toString() {
-        return "CalendarDay{" + year + "-" + month + "-" + day + "}";
+        SimpleDateFormat format = new SimpleDateFormat("MMMM YYYY");
+        return format.format(getDate());
     }
 
     /*

@@ -22,8 +22,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
@@ -172,6 +176,7 @@ public class MaterialCalendarView extends ViewGroup {
     private final TitleChanger titleChanger;
 
     private final TextView title;
+    private final Spinner monthPicker;
     private final DirectionButton buttonPast;
     private final DirectionButton buttonFuture;
     private final CalendarPager pager;
@@ -257,6 +262,7 @@ public class MaterialCalendarView extends ViewGroup {
         buttonPast = new DirectionButton(getContext());
         buttonPast.setContentDescription(getContext().getString(R.string.previous));
         title = new TextView(getContext());
+        monthPicker = new Spinner(getContext());
         buttonFuture = new DirectionButton(getContext());
         buttonFuture.setContentDescription(getContext().getString(R.string.next));
         pager = new CalendarPager(getContext());
@@ -409,8 +415,8 @@ public class MaterialCalendarView extends ViewGroup {
         buttonPast.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         topbar.addView(buttonPast, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
 
-        title.setGravity(Gravity.CENTER);
-        topbar.addView(title, new LinearLayout.LayoutParams(
+        monthPicker.setGravity(Gravity.CENTER);
+        topbar.addView(monthPicker, new LinearLayout.LayoutParams(
                 0, LayoutParams.MATCH_PARENT, DEFAULT_DAYS_IN_WEEK - 2
         ));
 
@@ -1998,6 +2004,36 @@ public class MaterialCalendarView extends ViewGroup {
         } else {
             adapter = adapter.migrateStateAndReturn(newAdapter);
         }
+
+        ArrayList<CalendarDay> months = new ArrayList<>();
+        CalendarDay day = CalendarDay.from(maxDate.getYear(), maxDate.getMonth(), 1);
+        int count = ((day.getYear() - minDate.getYear()) * 12) + day.getMonth() - minDate.getMonth();
+        for (int i = 0; i < count; i++) {
+            int numY = i / 12;
+            int numM = i % 12;
+
+            int year = minDate.getYear() + numY;
+            int month = minDate.getMonth() + numM;
+            if (month >= 12) {
+                year += 1;
+                month -= 12;
+            }
+
+            months.add(CalendarDay.from(year, month, 1));
+        }
+        monthPicker.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, months));
+        monthPicker.setSelection(pager.getCurrentItem());
+        monthPicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                pager.setCurrentItem(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         pager.setAdapter(adapter);
         setRangeDates(minDate, maxDate);
 
