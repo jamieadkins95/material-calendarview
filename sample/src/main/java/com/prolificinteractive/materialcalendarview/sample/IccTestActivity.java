@@ -31,7 +31,7 @@ public class IccTestActivity extends AppCompatActivity implements OnDateSelected
 
         widget.setOnDateChangedListener(this);
         widget.setTopbarVisible(false);
-        widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+        widget.setShowOtherDates(MaterialCalendarView.SHOW_NONE);
 
         Calendar instance = Calendar.getInstance();
         widget.setSelectedDate(instance.getTime());
