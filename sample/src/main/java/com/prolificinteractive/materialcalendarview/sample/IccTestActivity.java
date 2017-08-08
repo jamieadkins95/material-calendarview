@@ -30,6 +30,7 @@ public class IccTestActivity extends AppCompatActivity implements OnDateSelected
         ButterKnife.bind(this);
 
         widget.setOnDateChangedListener(this);
+        widget.setTopbarVisible(false);
         widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
 
         Calendar instance = Calendar.getInstance();
