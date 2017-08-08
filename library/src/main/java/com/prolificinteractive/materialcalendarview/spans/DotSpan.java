@@ -16,39 +16,47 @@ public class DotSpan implements LineBackgroundSpan {
 
     private final float radius;
     private final int color;
+    private final int count;
+    private final int index;
 
     /**
      * Create a span to draw a dot using default radius and color
      *
-     * @see #DotSpan(float, int)
+     * @see #DotSpan(float, int, int, int)
      * @see #DEFAULT_RADIUS
      */
     public DotSpan() {
         this.radius = DEFAULT_RADIUS;
         this.color = 0;
+        this.count = 1;
+        this.index = 0;
     }
 
     /**
      * Create a span to draw a dot using a specified color
      *
      * @param color color of the dot
-     * @see #DotSpan(float, int)
+     * @see #DotSpan(float, int, int, int)
      * @see #DEFAULT_RADIUS
      */
     public DotSpan(int color) {
         this.radius = DEFAULT_RADIUS;
         this.color = color;
+        this.count = 1;
+        this.index = 0;
     }
 
     /**
      * Create a span to draw a dot using a specified radius
      *
      * @param radius radius for the dot
-     * @see #DotSpan(float, int)
+     * @see #DotSpan(float, int, int, int)
      */
     public DotSpan(float radius) {
         this.radius = radius;
         this.color = 0;
+        this.count = 1;
+        this.index = 0;
     }
 
     /**
@@ -57,9 +65,11 @@ public class DotSpan implements LineBackgroundSpan {
      * @param radius radius for the dot
      * @param color  color of the dot
      */
-    public DotSpan(float radius, int color) {
+    public DotSpan(float radius, int color, int count, int index) {
         this.radius = radius;
         this.color = color;
+        this.count = count;
+        this.index = index;
     }
 
     @Override
@@ -73,7 +83,10 @@ public class DotSpan implements LineBackgroundSpan {
         if (color != 0) {
             paint.setColor(color);
         }
-        canvas.drawCircle((left + right) / 2, bottom + radius, radius, paint);
+        int middle = (left + right) / 2;
+        int quarter = middle / 2;
+        int x = quarter + (middle / (count + 1) * (index + 1));
+        canvas.drawCircle(x, bottom + radius, radius, paint);
         paint.setColor(oldColor);
     }
 }

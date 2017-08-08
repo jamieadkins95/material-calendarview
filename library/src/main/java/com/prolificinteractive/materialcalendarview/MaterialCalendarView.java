@@ -22,8 +22,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
@@ -1998,6 +2002,7 @@ public class MaterialCalendarView extends ViewGroup {
         } else {
             adapter = adapter.migrateStateAndReturn(newAdapter);
         }
+
         pager.setAdapter(adapter);
         setRangeDates(minDate, maxDate);
 
